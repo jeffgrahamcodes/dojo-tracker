@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dojo Tracker — Daily Learning</title>
+  <style>
+    :root {
+      --text-primary: #1a1a1a;
+      --text-secondary: #666666;
+      --text-muted: #999999;
+      --text-accent: #ffffff;
+      --surface-1: #f5f5f5;
+      --surface-2: #fafafa;
+      --bg-accent: #2c5aa0;
+      --border: #e0e0e0;
+      --border-accent: #2c5aa0;
+      --fill-accent: #2c5aa0;
+      --fill-success: #22c55e;
+      --on-accent: #ffffff;
+      --radius: 8px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-primary: #e5e5e5;
+        --text-secondary: #b0b0b0;
+        --text-muted: #808080;
+        --surface-1: #1a1a1a;
+        --surface-2: #242424;
+        --bg-accent: #3b5baa;
+        --border: #3a3a3a;
+        --border-accent: #3b5baa;
+        --fill-accent: #3b5baa;
+        --fill-success: #22c55e;
+        --on-accent: #ffffff;
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #ffffff;
+      color: var(--text-primary);
+      padding: 20px;
+      line-height: 1.5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #0f0f0f;
+      }
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 1.5rem;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: var(--text-primary);
+    }
+
+    .header p {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .today-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 1.5rem;
+    }
+
+    .today-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 12px;
+    }
+
+    .today-header label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .today-minutes {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .progress-bar {
+      position: relative;
+      height: 8px;
+      background: var(--surface-1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.2s ease;
+      background: var(--fill-accent);
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .day-picker {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .day-btn {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface-2);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+      min-width: 56px;
+      text-align: center;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .day-btn:hover {
+      border-color: var(--border-accent);
+    }
+
+    .day-btn.selected {
+      border: 2px solid var(--border-accent);
+      background: var(--bg-accent);
+      color: var(--text-accent);
+    }
+
+    .day-btn div:first-child {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .day-btn div:nth-child(2) {
+      font-size: 11px;
+      opacity: 0.7;
+      margin-top: 2px;
+    }
+
+    .day-btn div:nth-child(3) {
+      font-size: 10px;
+      margin-top: 4px;
+      opacity: 0.8;
+    }
+
+    .courses {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .course-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .course-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .course-minutes {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .course-slider {
+      width: 100%;
+      height: 6px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      accent-color: var(--fill-accent);
+    }
+
+    .quick-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    .quick-btn {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: transparent;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      flex: 1;
+      transition: all 0.15s;
+      color: var(--text-secondary);
+    }
+
+    .quick-btn:hover {
+      border-color: var(--border-accent);
+    }
+
+    .quick-btn.active {
+      background: var(--fill-accent);
+      color: var(--on-accent);
+      border-color: var(--fill-accent);
+    }
+
+    .weekly-summary {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+
+    .weekly-summary h2 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .weekly-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .weekly-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    .weekly-card-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .weekly-card-total {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .weekly-card-avg {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .week-total-card {
+      padding: 14px;
+      background: var(--bg-accent);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius);
+      text-align: center;
+      color: var(--on-accent);
+    }
+
+    .week-total-label {
+      font-size: 12px;
+      margin-bottom: 6px;
+      opacity: 0.9;
+    }
+
+    .week-total-number {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .week-total-note {
+      font-size: 11px;
+      opacity: 0.85;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 16px;
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      .header h1 {
+        font-size: 20px;
+      }
+
+      .weekly-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Dojo Tracker</h1>
+      <p id="targetLabel">Weekday Dojo — Track your daily learning</p>
+    </div>
+
+    <div class="today-card">
+      <div class="today-header">
+        <label>Today's total</label>
+        <span class="today-minutes" id="todayTotal">0 min</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-labels">
+        <span>0 min</span>
+        <span id="targetMid">37.5 min</span>
+        <span id="targetMax">45 min</span>
+      </div>
+    </div>
+
+    <div class="day-picker" id="dayPicker"></div>
+
+    <div class="courses" id="courses"></div>
+
+    <div class="weekly-summary">
+      <h2>Weekly totals</h2>
+      <div class="weekly-grid" id="weeklyCards"></div>
+      <div class="week-total-card">
+        <div class="week-total-label">Week total</div>
+        <div class="week-total-number" id="weekTotal">0h 0m</div>
+        <div class="week-total-note">Target: 4.5–5.5 hours per week</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const courses = [
+      { id: 'ztm', name: 'ZTM AI/ML Engineer', color: '#3987e5' },
+      { id: 'boot', name: 'Boot.dev', color: '#1baf7a' },
+      { id: 'cantrill', name: 'Cantrill AWS', color: '#e87ba4' },
+      { id: 'cs50', name: 'Harvard CS50', color: '#eda100' }
+    ];
+
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    let data = {};
+    let selectedDate = null;
+
+    function initData() {
+      const stored = localStorage.getItem('dojo-tracker-data');
+      if (stored) {
+        data = JSON.parse(stored);
+      } else {
+        const today = new Date();
+        const sunday = new Date(today);
+        sunday.setDate(today.getDate() - today.getDay());
+        
+        for (let i = 0; i < 7; i++) {
+          const date = new Date(sunday);
+          date.setDate(sunday.getDate() + i);
+          const key = date.toISOString().split('T')[0];
+          data[key] = courses.reduce((acc, c) => ({ ...acc, [c.id]: 0 }), {});
+        }
+      }
+      
+      selectedDate = new Date().toISOString().split('T')[0];
+    }
+
+    function saveData() {
+      localStorage.setItem('dojo-tracker-data', JSON.stringify(data));
+    }
+
+    function getDateList() {
+      return Object.keys(data).sort();
+    }
+
+    function getDayIndex(date) {
+      return getDateList().indexOf(date);
+    }
+
+    function isWeekend(date) {
+      const idx = getDayIndex(date);
+      return idx === 0 || idx === 6;
+    }
+
+    function getTargets(date) {
+      return isWeekend(date) ? { min: 60, max: 75 } : { min: 30, max: 45 };
+    }
+
+    function getDayTotal(date) {
+      return courses.reduce((sum, c) => sum + (data[date][c.id] || 0), 0);
+    }
+
+    function getCourseTotal(courseId) {
+      return getDateList().reduce((sum, date) => sum + (data[date][courseId] || 0), 0);
+    }
+
+    function getWeekTotal() {
+      return getDateList().reduce((sum, date) => sum + getDayTotal(date), 0);
+    }
+
+    function renderDayPicker() {
+      const picker = document.getElementById('dayPicker');
+      picker.innerHTML = '';
+      
+      getDateList().forEach((date, idx) => {
+        const d = new Date(date + 'T00:00');
+        const dayTotal = getDayTotal(date);
+        const targets = getTargets(date);
+        const hit = dayTotal >= targets.min;
+        
+        const btn = document.createElement('button');
+        btn.className = 'day-btn' + (date === selectedDate ? ' selected' : '');
+        btn.innerHTML = `
+          <div>${dayNames[idx]}</div>
+          <div>${d.getDate()}</div>
+          <div>${dayTotal}m ${hit ? '✓' : ''}</div>
+        `;
+        btn.onclick = () => { selectedDate = date; render(); };
+        picker.appendChild(btn);
+      });
+    }
+
+    function renderCourses() {
+      const container = document.getElementById('courses');
+      container.innerHTML = '';
+      
+      courses.forEach(course => {
+        const minutes = data[selectedDate][course.id] || 0;
+        
+        const card = document.createElement('div');
+        card.className = 'course-card';
+        card.innerHTML = `
+          <div class="course-header">
+            <label class="course-name">${course.name}</label>
+            <span class="course-minutes" style="color: ${course.color};">${minutes} min</span>
+          </div>
+          <input type="range" class="course-slider" min="0" max="45" step="5" value="${minutes}" data-course="${course.id}" />
+          <div class="quick-buttons">
+            ${[0, 10, 15, 20, 25, 30].map(val => `<button class="quick-btn${minutes === val ? ' active' : ''}" data-val="${val}">${val}</button>`).join('')}
+          </div>
+        `;
+        
+        const slider = card.querySelector('input');
+        slider.addEventListener('input', (e) => {
+          data[selectedDate][course.id] = parseInt(e.target.value);
+          saveData();
+          render();
+        });
+        
+        card.querySelectorAll('.quick-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const val = parseInt(btn.getAttribute('data-val'));
+            data[selectedDate][course.id] = val;
+            saveData();
+            render();
+          });
+        });
+        
+        container.appendChild(card);
+      });
+    }
+
+    function renderWeeklySummary() {
+      const grid = document.getElementById('weeklyCards');
+      grid.innerHTML = '';
+      
+      courses.forEach(course => {
+        const total = getCourseTotal(course.id);
+        const hours = Math.floor(total / 60);
+        const mins = total % 60;
+        
+        const card = document.createElement('div');
+        card.className = 'weekly-card';
+        card.innerHTML = `
+          <div class="weekly-card-label">${course.name}</div>
+          <div class="weekly-card-total">${hours}h ${mins}m</div>
+          <div class="weekly-card-avg">${(total / 7).toFixed(0)} min/day</div>
+        `;
+        grid.appendChild(card);
+      });
+      
+      const total = getWeekTotal();
+      const hours = Math.floor(total / 60);
+      const mins = total % 60;
+      document.getElementById('weekTotal').textContent = `${hours}h ${mins}m`;
+    }
+
+    function render() {
+      const targets = getTargets(selectedDate);
+      const dayType = isWeekend(selectedDate) ? 'Weekend' : 'Weekday';
+      const dateObj = new Date(selectedDate + 'T00:00');
+      const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      
+      document.getElementById('targetLabel').textContent = `${dayType} Dojo — ${dateStr}`;
+      document.getElementById('targetMid').textContent = `${(targets.min + targets.max) / 2} min`;
+      document.getElementById('targetMax').textContent = `${targets.max} min`;
+      
+      const todayTotal = getDayTotal(selectedDate);
+      const pct = Math.min(100, (todayTotal / targets.max) * 100);
+      const meetsTarget = todayTotal >= targets.min;
+      
+      document.getElementById('todayTotal').textContent = `${todayTotal} min`;
+      const fill = document.getElementById('progressFill');
+      fill.style.width = pct + '%';
+      fill.style.background = meetsTarget ? '#22c55e' : '#2c5aa0';
+      
+      renderDayPicker();
+      renderCourses();
+      renderWeeklySummary();
+    }
+
+    initData();
+    render();
+  </script>
+</body>
+</html>
