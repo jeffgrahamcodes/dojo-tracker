@@ -78,9 +78,50 @@
       color: var(--text-primary);
     }
 
-    .header p {
+    .header-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .tab-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .tab-btn {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface-2);
+      cursor: pointer;
       font-size: 13px;
-      color: var(--text-secondary);
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: all 0.15s;
+    }
+
+    .tab-btn.active {
+      border-color: var(--border-accent);
+      background: var(--bg-accent);
+      color: var(--text-accent);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface-2);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.15s;
     }
 
     .today-card {
@@ -215,57 +256,6 @@
       font-weight: 600;
     }
 
-    .course-slider {
-      width: 100%;
-      height: 6px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      -webkit-appearance: none;
-      appearance: none;
-      padding: 0;
-      border: none;
-      background: transparent;
-    }
-
-    .course-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--fill-accent);
-      cursor: pointer;
-      border: none;
-      margin-top: -4px;
-    }
-
-    .course-slider::-webkit-slider-runnable-track {
-      height: 6px;
-      background: var(--surface-1);
-      border-radius: 3px;
-      border: none;
-    }
-
-    .course-slider::-moz-range-thumb {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--fill-accent);
-      cursor: pointer;
-      border: none;
-    }
-
-    .course-slider::-moz-range-track {
-      background: transparent;
-      border: none;
-    }
-
-    .course-slider::-moz-range-progress {
-      background: var(--fill-accent);
-      height: 6px;
-      border-radius: 3px;
-    }
-
     .quick-buttons {
       display: flex;
       gap: 6px;
@@ -364,17 +354,113 @@
       opacity: 0.85;
     }
 
+    .analytics-section {
+      margin-bottom: 2rem;
+    }
+
+    .analytics-section h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .chart-bar {
+      margin-bottom: 12px;
+    }
+
+    .chart-bar-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+
+    .chart-bar-container {
+      height: 8px;
+      background: var(--surface-2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .chart-bar-fill {
+      height: 100%;
+      background: var(--fill-accent);
+      border-radius: 4px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .stat-number {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .stat-note {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .table-container {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      font-size: 12px;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      padding: 8px 0;
+      color: var(--text-secondary);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 8px 0;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    th:not(:first-child), td:not(:first-child) {
+      text-align: right;
+    }
+
     @media (max-width: 480px) {
       body {
         padding: 16px;
       }
 
-      .container {
-        max-width: 100%;
-      }
-
-      .header h1 {
-        font-size: 20px;
+      .header-controls {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
       }
 
       .weekly-grid {
@@ -386,36 +472,78 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>Dojo Tracker</h1>
-      <p id="targetLabel">Weekday Dojo — Track your daily learning</p>
+      <div class="header-controls">
+        <div>
+          <h1>Dojo Tracker</h1>
+          <p id="weekLabel" style="font-size: 13px; color: var(--text-secondary); margin: 0.25rem 0 0 0;">Week of Jul 1</p>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <div class="tab-buttons">
+            <button id="trackerTabBtn" class="tab-btn active">Tracker</button>
+            <button id="analyticsTabBtn" class="tab-btn">Analytics</button>
+          </div>
+          <div class="nav-buttons" id="navButtons">
+            <button id="prevWeekBtn" class="nav-btn">← Prev</button>
+            <button id="nextWeekBtn" class="nav-btn">Next →</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="today-card">
-      <div class="today-header">
-        <label>Today's total</label>
-        <span class="today-minutes" id="todayTotal">0 min</span>
+    <div id="trackerView">
+      <div class="today-card">
+        <div class="today-header">
+          <label>Today's total</label>
+          <span class="today-minutes" id="todayTotal">0 min</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-labels">
+          <span>0 min</span>
+          <span id="targetMid">37.5 min</span>
+          <span id="targetMax">45 min</span>
+        </div>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <div class="progress-labels">
-        <span>0 min</span>
-        <span id="targetMid">37.5 min</span>
-        <span id="targetMax">45 min</span>
+
+      <div class="day-picker" id="dayPicker"></div>
+
+      <div class="courses" id="courses"></div>
+
+      <div class="weekly-summary">
+        <h2>Weekly totals</h2>
+        <div class="weekly-grid" id="weeklyCards"></div>
+        <div class="week-total-card">
+          <div class="week-total-label">Week total</div>
+          <div class="week-total-number" id="weekTotal">0h 0m</div>
+          <div class="week-total-note">Target: 4.5–5.5 hours per week</div>
+        </div>
       </div>
     </div>
 
-    <div class="day-picker" id="dayPicker"></div>
+    <div id="analyticsView" style="display: none;">
+      <div class="weekly-summary" style="border-top: none; padding-top: 0;">
+        <h2>Historical Analytics</h2>
+        
+        <div class="analytics-section">
+          <h3>Weekly Progression</h3>
+          <div id="weeklyChart"></div>
+        </div>
 
-    <div class="courses" id="courses"></div>
+        <div class="analytics-section">
+          <h3>Course Investment (Latest Week)</h3>
+          <div class="weekly-grid" id="courseBreakdown"></div>
+        </div>
 
-    <div class="weekly-summary">
-      <h2>Weekly totals</h2>
-      <div class="weekly-grid" id="weeklyCards"></div>
-      <div class="week-total-card">
-        <div class="week-total-label">Week total</div>
-        <div class="week-total-number" id="weekTotal">0h 0m</div>
-        <div class="week-total-note">Target: 4.5–5.5 hours per week</div>
+        <div class="analytics-section">
+          <h3>Consistency</h3>
+          <div class="stats-grid" id="consistencyStats"></div>
+        </div>
+
+        <div class="analytics-section">
+          <h3>All Weeks</h3>
+          <div class="table-container" id="allWeeksTable"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -431,6 +559,45 @@
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     let data = {};
     let selectedDate = null;
+    let currentWeekStart = null;
+    let currentView = 'tracker';
+
+    function getSundayOfWeek(date) {
+      let d;
+      
+      // Handle both Date objects and ISO string inputs
+      if (typeof date === 'string') {
+        const parts = date.split('-');
+        const year = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1;
+        const day = parseInt(parts[2]);
+        d = new Date(year, month, day);
+      } else {
+        d = new Date(date);
+      }
+      
+      const dayOfWeek = d.getDay();
+      d.setDate(d.getDate() - dayOfWeek);
+      return d;
+    }
+
+    function getWeekDates(sunday) {
+      const dates = [];
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(sunday);
+        date.setDate(sunday.getDate() + i);
+        // Format in local timezone instead of using toISOString() which converts to UTC
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const key = `${year}-${month}-${day}`;
+        if (!data[key]) {
+          data[key] = courses.reduce((acc, c) => ({ ...acc, [c.id]: 0 }), {});
+        }
+        dates.push(key);
+      }
+      return dates;
+    }
 
     function initData() {
       const stored = localStorage.getItem('dojo-tracker-data');
@@ -438,18 +605,24 @@
         data = JSON.parse(stored);
       } else {
         const today = new Date();
-        const sunday = new Date(today);
-        sunday.setDate(today.getDate() - today.getDay());
-        
+        const sunday = getSundayOfWeek(today);
         for (let i = 0; i < 7; i++) {
           const date = new Date(sunday);
           date.setDate(sunday.getDate() + i);
-          const key = date.toISOString().split('T')[0];
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          const key = `${year}-${month}-${day}`;
           data[key] = courses.reduce((acc, c) => ({ ...acc, [c.id]: 0 }), {});
         }
       }
       
-      selectedDate = new Date().toISOString().split('T')[0];
+      currentWeekStart = getSundayOfWeek(new Date());
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      selectedDate = `${year}-${month}-${day}`;
     }
 
     function saveData() {
@@ -457,7 +630,7 @@
     }
 
     function getDateList() {
-      return Object.keys(data).sort();
+      return getWeekDates(currentWeekStart).sort();
     }
 
     function getDayIndex(date) {
@@ -485,21 +658,44 @@
       return getDateList().reduce((sum, date) => sum + getDayTotal(date), 0);
     }
 
+    function isCurrentWeek() {
+      const today = getSundayOfWeek(new Date());
+      return currentWeekStart.getTime() === today.getTime();
+    }
+
+    function goToPreviousWeek() {
+      const prev = new Date(currentWeekStart);
+      prev.setDate(prev.getDate() - 7);
+      currentWeekStart = prev;
+      selectedDate = getWeekDates(currentWeekStart)[0];
+      render();
+    }
+
+    function goToNextWeek() {
+      if (!isCurrentWeek()) {
+        const next = new Date(currentWeekStart);
+        next.setDate(next.getDate() + 7);
+        currentWeekStart = next;
+        selectedDate = getWeekDates(currentWeekStart)[0];
+        render();
+      }
+    }
+
     function renderDayPicker() {
       const picker = document.getElementById('dayPicker');
       picker.innerHTML = '';
       
       getDateList().forEach((date, idx) => {
-        const d = new Date(date + 'T00:00');
         const dayTotal = getDayTotal(date);
         const targets = getTargets(date);
         const hit = dayTotal >= targets.min;
+        const dayOfMonth = parseInt(date.split('-')[2]);
         
         const btn = document.createElement('button');
         btn.className = 'day-btn' + (date === selectedDate ? ' selected' : '');
         btn.innerHTML = `
           <div>${dayNames[idx]}</div>
-          <div>${d.getDate()}</div>
+          <div>${dayOfMonth}</div>
           <div>${dayTotal}m ${hit ? '✓' : ''}</div>
         `;
         btn.onclick = () => { selectedDate = date; render(); };
@@ -564,18 +760,155 @@
       document.getElementById('weekTotal').textContent = `${hours}h ${mins}m`;
     }
 
+    function getAllWeeks() {
+      const weeks = {};
+      Object.keys(data).sort().forEach(dateStr => {
+        const parts = dateStr.split('-');
+        const year = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1;
+        const day = parseInt(parts[2]);
+        const d = new Date(year, month, day);
+        const sunday = getSundayOfWeek(d);
+        const sunYear = sunday.getFullYear();
+        const sunMonth = String(sunday.getMonth() + 1).padStart(2, '0');
+        const sunDay = String(sunday.getDate()).padStart(2, '0');
+        const weekKey = `${sunYear}-${sunMonth}-${sunDay}`;
+        if (!weeks[weekKey]) {
+          weeks[weekKey] = [];
+        }
+        weeks[weekKey].push(dateStr);
+      });
+      return weeks;
+    }
+
+    function renderAnalytics() {
+      const allWeeks = getAllWeeks();
+      const stats = [];
+      
+      Object.keys(allWeeks).sort().reverse().forEach(weekKey => {
+        const dateStrs = allWeeks[weekKey];
+        const weekTotal = dateStrs.reduce((sum, d) => sum + getDayTotal(d), 0);
+        const daysHitTarget = dateStrs.filter(d => {
+          const targets = getTargets(d);
+          return getDayTotal(d) >= targets.min;
+        }).length;
+        
+        stats.push({
+          week: weekKey,
+          total: weekTotal,
+          daysHitTarget: daysHitTarget,
+          dates: dateStrs
+        });
+      });
+      
+      // Weekly progression chart
+      const chartDiv = document.getElementById('weeklyChart');
+      const maxTotal = Math.max(...stats.map(s => s.total), 300);
+      const chartHTML = stats.map(s => {
+        const d = new Date(s.week + 'T00:00');
+        const weekStart = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const hours = Math.floor(s.total / 60);
+        const mins = s.total % 60;
+        const pct = (s.total / maxTotal) * 100;
+        return `
+          <div class="chart-bar">
+            <div class="chart-bar-label">
+              <span>${weekStart}</span>
+              <span>${hours}h ${mins}m</span>
+            </div>
+            <div class="chart-bar-container">
+              <div class="chart-bar-fill" style="width: ${pct}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      chartDiv.innerHTML = chartHTML || '<p style="color: var(--text-muted);">No data yet</p>';
+      
+      // Course breakdown - latest week
+      const breakdown = document.getElementById('courseBreakdown');
+      if (stats.length > 0) {
+        const latestWeek = stats[0];
+        breakdown.innerHTML = courses.map(c => {
+          const total = latestWeek.dates.reduce((sum, d) => sum + (data[d][c.id] || 0), 0);
+          const hours = Math.floor(total / 60);
+          const mins = total % 60;
+          return `
+            <div class="weekly-card">
+              <div class="weekly-card-label">${c.name}</div>
+              <div class="weekly-card-total" style="color: ${c.color};">${hours}h ${mins}m</div>
+              <div class="weekly-card-avg">Latest week</div>
+            </div>
+          `;
+        }).join('');
+      }
+      
+      // Consistency stats
+      const consistency = document.getElementById('consistencyStats');
+      const totalDays = stats.reduce((sum, s) => sum + s.daysHitTarget, 0);
+      const totalPossible = stats.length * 7;
+      const consistencyPct = totalPossible > 0 ? Math.round((totalDays / totalPossible) * 100) : 0;
+      const avgWeekly = stats.length > 0 ? (stats.reduce((sum, s) => sum + s.total, 0) / stats.length / 60).toFixed(1) : 0;
+      
+      consistency.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-label">Hit Target</div>
+          <div class="stat-number" style="color: var(--fill-success);">${consistencyPct}%</div>
+          <div class="stat-note">${totalDays} of ${totalPossible} days</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Weekly Avg</div>
+          <div class="stat-number" style="color: var(--fill-accent);">${avgWeekly}h</div>
+          <div class="stat-note">Target: 4.5-5.5h</div>
+        </div>
+      `;
+      
+      // All weeks table
+      const allWeeksTableDiv = document.getElementById('allWeeksTable');
+      const tableHTML = `
+        <table>
+          <tr>
+            <th>Week</th>
+            <th>Total</th>
+            <th>Days Hit</th>
+          </tr>
+          ${stats.map(s => {
+            const d = new Date(s.week + 'T00:00');
+            const weekStart = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const hours = Math.floor(s.total / 60);
+            const mins = s.total % 60;
+            return `
+              <tr>
+                <td>${weekStart}</td>
+                <td>${hours}h ${mins}m</td>
+                <td style="color: ${s.daysHitTarget >= 5 ? 'var(--fill-success)' : 'var(--text-secondary)'};">${s.daysHitTarget}/7</td>
+              </tr>
+            `;
+          }).join('')}
+        </table>
+      `;
+      allWeeksTableDiv.innerHTML = tableHTML;
+    }
+
     function render() {
       const targets = getTargets(selectedDate);
-      const dayType = isWeekend(selectedDate) ? 'Weekend' : 'Weekday';
-      const dateObj = new Date(selectedDate + 'T00:00');
-      const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const weekStart = new Date(currentWeekStart);
+      const weekEnd = new Date(currentWeekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
       
-      document.getElementById('targetLabel').textContent = `${dayType} Dojo — ${dateStr}`;
+      const startStr = weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const endStr = weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      document.getElementById('weekLabel').textContent = `Week of ${startStr} – ${endStr}`;
+      
       document.getElementById('targetMid').textContent = `${(targets.min + targets.max) / 2} min`;
       document.getElementById('targetMax').textContent = `${targets.max} min`;
       
+      const nextBtn = document.getElementById('nextWeekBtn');
+      nextBtn.disabled = isCurrentWeek();
+      nextBtn.style.opacity = isCurrentWeek() ? '0.5' : '1';
+      
       const todayTotal = getDayTotal(selectedDate);
-      const pct = (todayTotal / targets.min) * 100;
+      const displayMax = Math.max(targets.max, todayTotal);
+      const pct = (todayTotal / displayMax) * 100;
       const meetsTarget = todayTotal >= targets.min;
       
       document.getElementById('todayTotal').textContent = `${todayTotal} min`;
@@ -588,8 +921,39 @@
       renderWeeklySummary();
     }
 
+    function switchView(view) {
+      currentView = view;
+      const trackerView = document.getElementById('trackerView');
+      const analyticsView = document.getElementById('analyticsView');
+      const trackerBtn = document.getElementById('trackerTabBtn');
+      const analyticsBtn = document.getElementById('analyticsTabBtn');
+      const navButtons = document.getElementById('navButtons');
+      
+      if (view === 'tracker') {
+        trackerView.style.display = 'block';
+        analyticsView.style.display = 'none';
+        trackerBtn.classList.add('active');
+        analyticsBtn.classList.remove('active');
+        navButtons.style.display = 'flex';
+        document.getElementById('weekLabel').style.display = 'block';
+      } else {
+        trackerView.style.display = 'none';
+        analyticsView.style.display = 'block';
+        trackerBtn.classList.remove('active');
+        analyticsBtn.classList.add('active');
+        navButtons.style.display = 'none';
+        document.getElementById('weekLabel').style.display = 'none';
+        renderAnalytics();
+      }
+    }
+
     initData();
     render();
+    
+    document.getElementById('trackerTabBtn').addEventListener('click', () => switchView('tracker'));
+    document.getElementById('analyticsTabBtn').addEventListener('click', () => switchView('analytics'));
+    document.getElementById('prevWeekBtn').addEventListener('click', goToPreviousWeek);
+    document.getElementById('nextWeekBtn').addEventListener('click', goToNextWeek);
   </script>
 </body>
 </html>
