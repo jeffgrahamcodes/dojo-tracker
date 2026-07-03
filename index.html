@@ -220,7 +220,50 @@
       height: 6px;
       margin-bottom: 10px;
       cursor: pointer;
-      accent-color: var(--fill-accent);
+      -webkit-appearance: none;
+      appearance: none;
+      padding: 0;
+      border: none;
+      background: transparent;
+    }
+
+    .course-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--fill-accent);
+      cursor: pointer;
+      border: none;
+      margin-top: -4px;
+    }
+
+    .course-slider::-webkit-slider-runnable-track {
+      height: 6px;
+      background: var(--surface-1);
+      border-radius: 3px;
+      border: none;
+    }
+
+    .course-slider::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--fill-accent);
+      cursor: pointer;
+      border: none;
+    }
+
+    .course-slider::-moz-range-track {
+      background: transparent;
+      border: none;
+    }
+
+    .course-slider::-moz-range-progress {
+      background: var(--fill-accent);
+      height: 6px;
+      border-radius: 3px;
     }
 
     .quick-buttons {
@@ -478,18 +521,10 @@
             <label class="course-name">${course.name}</label>
             <span class="course-minutes" style="color: ${course.color};">${minutes} min</span>
           </div>
-          <input type="range" class="course-slider" min="0" max="45" step="5" value="${minutes}" data-course="${course.id}" />
           <div class="quick-buttons">
             ${[0, 10, 15, 20, 25, 30].map(val => `<button class="quick-btn${minutes === val ? ' active' : ''}" data-val="${val}">${val}</button>`).join('')}
           </div>
         `;
-        
-        const slider = card.querySelector('input');
-        slider.addEventListener('input', (e) => {
-          data[selectedDate][course.id] = parseInt(e.target.value);
-          saveData();
-          render();
-        });
         
         card.querySelectorAll('.quick-btn').forEach(btn => {
           btn.addEventListener('click', () => {
@@ -540,7 +575,7 @@
       document.getElementById('targetMax').textContent = `${targets.max} min`;
       
       const todayTotal = getDayTotal(selectedDate);
-      const pct = Math.min(100, (todayTotal / targets.max) * 100);
+      const pct = (todayTotal / targets.min) * 100;
       const meetsTarget = todayTotal >= targets.min;
       
       document.getElementById('todayTotal').textContent = `${todayTotal} min`;
